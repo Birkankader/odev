@@ -164,6 +164,6 @@ int main()
         }
     }
 
-   printf("%c\n%c\n%c\n%c\n%c\n%c\n%c\n%c\n%c\n%c\n%c\n%c", 152,166,158,153,154,128,105,167,159,148,129,135);
+   printf("%c\n%c\n%c\n%c\n%c\n%c\n%c\n%c\n%c\n%c\n%c\n%c", 152,166,158,153,154,128,105,167,159,148,129,135); // TÜRKÇE KARAKTER KONTROL
     return 0;
 }
