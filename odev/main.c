@@ -12,6 +12,7 @@ typedef struct
 int main()
 {
     setlocale(LC_ALL,"tr_TR.UTF-8");
+   // setlocale(LC_ALL,"Turkish");
 
 // HARFLERİN TANIMI //
     struct_harf dizi[29];
@@ -80,28 +81,81 @@ int main()
     dizi[22].adet = 0;
     dizi[25].harf = 154;//Ü
     dizi[25].adet = 0;
+
+    ////
+/*
+    dizi[3].harf = 199;//Ç
+    dizi[3].adet = 0;
+    dizi[8].harf = 208;//Ğ
+    dizi[8].adet = 0;
+    dizi[11].harf = 221;//İ
+    dizi[11].adet = 0;
+    dizi[18].harf = 214;//Ö
+    dizi[18].adet = 0;
+    dizi[22].harf = 222;//Ş
+    dizi[22].adet = 0;
+    dizi[25].harf = 220;//Ü
+    dizi[25].adet = 0;
+*/
+
+
 ////////////////////////////////////////////////////
 // DEĞİŞKEN TANIMLAMA //
     char cumle[10000];
   	FILE *fp;
     char *cumleptr;
-    int gecici_harf;
+    int gecici_harf,a;
     cumleptr = cumle;
 	gets(cumleptr);
-                                            //  printf("%s",cumleptr); DÜZGÜN ALINIYOR MU KONTROL.
+                                             //printf("%s",cumleptr); DÜZGÜN ALINIYOR MU KONTROL.
+
 // DOSYAYA YAZDIRMA MODÜLÜ //
 	fp=fopen("dosya.txt","w");
 	if(fp==NULL){
 		printf("Dosya açılamadı");
 		exit(1);
 	}
+	for(a=0;a<strlen(cumle);a++){
 
-	while(*cumleptr)
+        gecici_harf=*(cumleptr+a);
+/*
+
+//ASCII KODLARI REFERANS ADRESİ https://msdn.microsoft.com/en-us/library/cc195056.aspx // <<-- SETLOCALE TURKİSH
+
+        if(gecici_harf == 231)//
+            *(cumleptr+a) = 199;    //  printf("%c",gecici_harf); İF - ELSE BLOGUNA GİRİŞ KONTROL.
+        else if(gecici_harf == 240)//
+            *(cumleptr+a)= 208;
+        else if(gecici_harf == 152)//
+            *(cumleptr+a) =221;
+        else if(gecici_harf ==246)//
+            *(cumleptr+a) =214;
+        else if(gecici_harf == 254)//
+            *(cumleptr+a) =222;
+        else if(gecici_harf == 252)//
+            *(cumleptr+a) = 220;
+*/
+
+//ASCII KODLARI REFERANS ADRESİ https://www.ascii-codes.com/cp857.html // <<-- SETLOCALE tr.TR.UTF-8
+        if(gecici_harf == 105)//
+            *(cumleptr+a) = 152;    //  printf("%c",gecici_harf); İF - ELSE BLOGUNA GİRİŞ KONTROL.
+        else if(gecici_harf == 167)//
+            *(cumleptr+a)= 166;
+        else if(gecici_harf == 159)//
+            *(cumleptr+a) =158;
+        else if(gecici_harf ==148)//
+            *(cumleptr+a) =153;
+        else if(gecici_harf == 129)//
+            *(cumleptr+a) =154;
+        else if(gecici_harf == 135)//
+            *(cumleptr+a) = 128;
+     }
+        fwrite(cumleptr,strlen(cumle),1,fp);
+
+	/*while(*cumleptr)
         {
         gecici_harf=*cumleptr;
-
-//ASCII KODLARI REFERANS ADRESİ https://www.ascii-codes.com/cp857.html //
-
+            /*
             if(gecici_harf == 105)//
                 fputc(152,fp);              //  printf("%c",gecici_harf); İF - ELSE BLOGUNA GİRİŞ KONTROL.
             else if(gecici_harf == 167)//
@@ -122,9 +176,8 @@ int main()
                 printf("Dosyaya yazma hatası!/n");
                 exit(1);
             }
-
 		cumleptr++;
-	}
+	}*/
 	fclose(fp);
 ////////////////////////////////////////////////////
 
@@ -137,7 +190,8 @@ int main()
 //  HARF KONTROLÜ   //
 	for(i=0;i<strlen(cumle);i++)
     {
-        karakter=fgetc(fp);
+
+        fread(&karakter,sizeof(char),1,fp);
        // printf("%c",karakter);
         k=toupper(karakter);
 
@@ -155,12 +209,12 @@ int main()
         toplam+=dizi[i].adet;
 
     printf("Toplam harf sayısı:%d\n",toplam);
-
+    int eb=0;
     for(i=0;i<29;i++)
     {
         if(dizi[i].adet>0)
         {
-            printf("%c --> %d\n",dizi[i].harf,dizi[i].adet);
+          printf("%c --> %d\n",dizi[i].harf,dizi[i].adet);
         }
     }
 
