@@ -82,7 +82,6 @@ int main()
     dizi[25].harf = 154;//Ü
     dizi[25].adet = 0;
 
-    ////
 /*
     dizi[3].harf = 199;//Ç
     dizi[3].adet = 0;
@@ -98,7 +97,6 @@ int main()
     dizi[25].adet = 0;
 */
 
-
 ////////////////////////////////////////////////////
 // DEĞİŞKEN TANIMLAMA //
     char cumle[10000];
@@ -108,7 +106,6 @@ int main()
     cumleptr = cumle;
 	gets(cumleptr);
                                              //printf("%s",cumleptr); DÜZGÜN ALINIYOR MU KONTROL.
-
 // DOSYAYA YAZDIRMA MODÜLÜ //
 	fp=fopen("dosya.txt","w");
 	if(fp==NULL){
@@ -192,7 +189,7 @@ int main()
     {
 
         fread(&karakter,sizeof(char),1,fp);
-       // printf("%c",karakter);
+        printf("%c\n",karakter);
         k=toupper(karakter);
 
         for(j=0;j<29;j++)
@@ -208,16 +205,35 @@ int main()
     for(i=0;i<29;i++)
         toplam+=dizi[i].adet;
 
+//BUBBLE SORT İLE SIRALAMA //
+    int temp=0;
+
+            for (i=1; i<29; i++)
+            {
+                for (j=0; j<29-i; j++)
+                {
+                    if(dizi[j].adet < dizi[j+1].adet)
+                    {
+                        temp = dizi [j].adet;
+                        if(temp!=0)
+                        {
+                        dizi [j].adet = dizi [j+1].adet;
+                        dizi [j+1].adet = temp;
+                        //printf("%d\n",dizi[j].adet);
+                        }
+                    }
+                }
+            }
+
     printf("Toplam harf sayısı:%d\n",toplam);
-    int eb=0;
     for(i=0;i<29;i++)
     {
         if(dizi[i].adet>0)
         {
           printf("%c --> %d\n",dizi[i].harf,dizi[i].adet);
-        }
+       }
     }
 
-   printf("%c\n%c\n%c\n%c\n%c\n%c\n%c\n%c\n%c\n%c\n%c\n%c", 152,166,158,153,154,128,105,167,159,148,129,135); // TÜRKÇE KARAKTER KONTROL
+  // printf("%c\n%c\n%c\n%c\n%c\n%c\n%c\n%c\n%c\n%c\n%c\n%c", 152,166,158,153,154,128,105,167,159,148,129,135);
     return 0;
 }
