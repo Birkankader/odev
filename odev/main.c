@@ -1,7 +1,8 @@
 #include <stdio.h>
+#include <locale.h>
 #include <string.h>
 #include <ctype.h>
-#include <locale.h>
+
 
 typedef struct
 {
@@ -11,8 +12,8 @@ typedef struct
 
 int main()
 {
-    setlocale(LC_ALL,"tr_TR.UTF-8");
-   // setlocale(LC_ALL,"Turkish");
+    setlocale(LC_ALL,"Turkish");
+
 
 // HARFLERİN TANIMI //
     struct_harf dizi[29];
@@ -66,23 +67,12 @@ int main()
     dizi[28].harf = 'Z';
     dizi[28].adet = 0;
 
+//ASCII KODLARI REFERANS ADRESİ https://msdn.microsoft.com/en-us/library/cc195056.aspx // <<-- SETLOCALE TURKİSH
+//ASCII KODLARI REFERANS ADRESİ https://www.ascii-codes.com/cp857.html // <<-- SETLOCALE tr.TR.UTF-8
+
 ////////////////////////////
 // TÜRKÇE KARAKTERLER //
 
-    dizi[3].harf = 128;//Ç
-    dizi[3].adet = 0;
-    dizi[8].harf = 166;//Ğ
-    dizi[8].adet = 0;
-    dizi[11].harf = 152;//İ
-    dizi[11].adet = 0;
-    dizi[18].harf = 153;//Ö
-    dizi[18].adet = 0;
-    dizi[22].harf = 158;//Ş
-    dizi[22].adet = 0;
-    dizi[25].harf = 154;//Ü
-    dizi[25].adet = 0;
-
-/*
     dizi[3].harf = 199;//Ç
     dizi[3].adet = 0;
     dizi[8].harf = 208;//Ğ
@@ -95,108 +85,44 @@ int main()
     dizi[22].adet = 0;
     dizi[25].harf = 220;//Ü
     dizi[25].adet = 0;
-*/
+
 
 ////////////////////////////////////////////////////
 // DEĞİŞKEN TANIMLAMA //
-    char cumle[10000];
   	FILE *fp;
-    char *cumleptr;
-    int gecici_harf,a;
-    cumleptr = cumle;
-	gets(cumleptr);
-                                             //printf("%s",cumleptr); DÜZGÜN ALINIYOR MU KONTROL.
-// DOSYAYA YAZDIRMA MODÜLÜ //
-	fp=fopen("dosya.txt","w");
-	if(fp==NULL){
-		printf("Dosya açılamadı");
-		exit(1);
-	}
-	for(a=0;a<strlen(cumle);a++){
-
-        gecici_harf=*(cumleptr+a);
-/*
-
-//ASCII KODLARI REFERANS ADRESİ https://msdn.microsoft.com/en-us/library/cc195056.aspx // <<-- SETLOCALE TURKİSH
-
-        if(gecici_harf == 231)//
-            *(cumleptr+a) = 199;    //  printf("%c",gecici_harf); İF - ELSE BLOGUNA GİRİŞ KONTROL.
-        else if(gecici_harf == 240)//
-            *(cumleptr+a)= 208;
-        else if(gecici_harf == 152)//
-            *(cumleptr+a) =221;
-        else if(gecici_harf ==246)//
-            *(cumleptr+a) =214;
-        else if(gecici_harf == 254)//
-            *(cumleptr+a) =222;
-        else if(gecici_harf == 252)//
-            *(cumleptr+a) = 220;
-*/
-
-//ASCII KODLARI REFERANS ADRESİ https://www.ascii-codes.com/cp857.html // <<-- SETLOCALE tr.TR.UTF-8
-        if(gecici_harf == 105)//
-            *(cumleptr+a) = 152;    //  printf("%c",gecici_harf); İF - ELSE BLOGUNA GİRİŞ KONTROL.
-        else if(gecici_harf == 167)//
-            *(cumleptr+a)= 166;
-        else if(gecici_harf == 159)//
-            *(cumleptr+a) =158;
-        else if(gecici_harf ==148)//
-            *(cumleptr+a) =153;
-        else if(gecici_harf == 129)//
-            *(cumleptr+a) =154;
-        else if(gecici_harf == 135)//
-            *(cumleptr+a) = 128;
-     }
-        fwrite(cumleptr,strlen(cumle),1,fp);
-
-	/*while(*cumleptr)
-        {
-        gecici_harf=*cumleptr;
-            /*
-            if(gecici_harf == 105)//
-                fputc(152,fp);              //  printf("%c",gecici_harf); İF - ELSE BLOGUNA GİRİŞ KONTROL.
-            else if(gecici_harf == 167)//
-                fputc(166,fp);
-            else if(gecici_harf == 159)//
-                fputc(158,fp);
-            else if(gecici_harf == 148)//
-                fputc(153,fp);
-            else if(gecici_harf == 129)//
-                fputc(154,fp);
-            else if(gecici_harf == 135)//
-                fputc(128,fp);
-            else
-                fputc(gecici_harf,fp);
-
-            if(gecici_harf==EOF)
-            {
-                printf("Dosyaya yazma hatası!/n");
-                exit(1);
-            }
-		cumleptr++;
-	}*/
-	fclose(fp);
+    int i=0,j,k;
+    char karakter[1000];
+    char *karakterptr;
+    karakterptr=karakter;
 ////////////////////////////////////////////////////
 
 // DOSYADAN OKUMA MODÜLÜ //
 
-    int i,j,k,karakter;
 
 	fp=fopen("dosya.txt","r");
-    cumleptr=cumle;
-//  HARF KONTROLÜ   //
-	for(i=0;i<strlen(cumle);i++)
+
+    //  HARF KONTROLÜ   //
+
+    for( ; ; )
     {
+        *(karakterptr+i)=fgetc(fp);
 
-        fread(&karakter,sizeof(char),1,fp);
-        printf("%c\n",karakter);
-        k=toupper(karakter);
+            if(*(karakterptr+i)==105)       // Küçük "i" gelmesi durumunda onu büyük "İ" ile değiştirir.
+                *(karakterptr+i)=221;
+            else if(*(karakterptr+i)==253)
+                *(karakterptr+i)=73;
+            else if(*(karakterptr+i)==EOF)  // END OF File'a eşit olduğunda döngü sonlanır.
+                break;
 
-        for(j=0;j<29;j++)
-        {
-           if(dizi[j].harf==k)
-                dizi[j].adet+=1;
-        }
+        k=toupper(*(karakterptr+i));        // İşaretçiden aldığı harfi büyütür ve k değişkenine atar.
+                                                // printf("%c",k); UFAK SAĞLAMA SATIRI.
+
+            for(j=0;j<29;j++)               // k değişkenine atanan harfler tanımlanan dizidekilerle karşılaştırılır.
+            {
+                if(dizi[j].harf==k)
+                    dizi[j].adet+=1;
+            }
+        i++;
     }
 
     fclose(fp);
@@ -206,7 +132,8 @@ int main()
         toplam+=dizi[i].adet;
 
 //BUBBLE SORT İLE SIRALAMA //
-    int temp=0;
+
+    int temp,tempharf;
 
             for (i=1; i<29; i++)
             {
@@ -214,16 +141,18 @@ int main()
                 {
                     if(dizi[j].adet < dizi[j+1].adet)
                     {
-                        temp = dizi [j].adet;
-                        if(temp!=0)
-                        {
-                        dizi [j].adet = dizi [j+1].adet;
-                        dizi [j+1].adet = temp;
-                        //printf("%d\n",dizi[j].adet);
-                        }
+                        temp = dizi [j].adet;               // dizi[j].adet içindeki değer yer değiştirilmek üzere temp'in içine atıldı.
+                        dizi [j].adet = dizi [j+1].adet;    // dizi[j+1].adet içindeki değer dizi[j].adet içine atıldı.
+                        dizi [j+1].adet = temp;             // temp'in içindeki dizi[j].adet değeri dizi[j+1].adet içine atıldı.
+
+                        tempharf = dizi [j].harf;           // Sayılarla birlikte harflerin de yerinin değişmesi istendiği için aynı işlemler harf için yapıldı.
+                        dizi [j].harf = dizi [j+1].harf;
+                        dizi [j+1].harf = tempharf;
                     }
                 }
             }
+
+// EKRANA BASTIRMA MODÜLÜ //
 
     printf("Toplam harf sayısı:%d\n",toplam);
     for(i=0;i<29;i++)
@@ -231,9 +160,8 @@ int main()
         if(dizi[i].adet>0)
         {
           printf("%c --> %d\n",dizi[i].harf,dizi[i].adet);
-       }
-    }
 
-  // printf("%c\n%c\n%c\n%c\n%c\n%c\n%c\n%c\n%c\n%c\n%c\n%c", 152,166,158,153,154,128,105,167,159,148,129,135);
+        }
+    }
     return 0;
 }
