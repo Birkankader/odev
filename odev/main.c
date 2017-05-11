@@ -9,14 +9,13 @@ typedef struct
 } struct_harf;
 struct_harf dizi[29];
 
+void harftanimla(struct_harf dizi[]);
 void siralama(struct_harf dizi[]);
 
-int main()
-{
-    setlocale(LC_ALL,"Turkish");
-
-
 // HARFLERİN TANIMI //
+void harftanimla(struct_harf dizi[])
+{
+
 
 ////////////////////////////
 // İNGİLİZCE KARAKTERLER //
@@ -87,6 +86,12 @@ int main()
     dizi[25].harf = 220;//Ü
     dizi[25].adet = 0;
 
+}
+
+int main()
+{
+    setlocale(LC_ALL,"Turkish");
+    harftanimla(dizi);
 
 ////////////////////////////////////////////////////
 // DEĞİŞKEN TANIMLAMA //
@@ -124,7 +129,7 @@ int main()
 
     int toplam=0;
     for(i=0;i<29;i++)
-        toplam+=dizi[i].adet;
+        toplam+=dizi[i].adet;          // Toplam harf sayısını sayar.
 
 //BUBBLE SORT İLE SIRALAMA //
 
@@ -144,6 +149,7 @@ int main()
     return 0;
 }
 
+//BUBBLE SORT İLE SIRALAMA FONKSİYONU //
 void siralama(struct_harf dizi[])
 {
      int temp,tempharf;
