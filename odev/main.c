@@ -1,22 +1,26 @@
 #include <stdio.h>
 #include <locale.h>
 #include <string.h>
+#include <ctype.h>
 
 typedef struct
 {
  int harf;
  int adet;
 } struct_harf;
+
+int i;
 struct_harf dizi[29];
 
-void harftanimla(struct_harf dizi[]);
-void siralama(struct_harf dizi[]);
+void HarfTanimla(struct_harf dizi[]);
+void Siralama(struct_harf dizi[]);
+void HarfKontrol(struct_harf dizi[]);
+void Yazdir(struct_harf dizi[]);
+int  Toplam(struct_harf dizi[]);
 
-// HARFLERİN TANIMI //
-void harftanimla(struct_harf dizi[])
+
+void HarfTanimla(struct_harf dizi[])
 {
-
-
 ////////////////////////////
 // İNGİLİZCE KARAKTERLER //
 
@@ -91,69 +95,17 @@ void harftanimla(struct_harf dizi[])
 int main()
 {
     setlocale(LC_ALL,"Turkish");
-    harftanimla(dizi);
-
-////////////////////////////////////////////////////
-// DEĞİŞKEN TANIMLAMA //
-  	FILE *fp;
-    int i=0,k;
-    int karakter;
-////////////////////////////////////////////////////
-
-// DOSYADAN OKUMA MODÜLÜ //
-	fp=fopen("dosya.txt","r");
-
-    //  HARF KONTROLÜ   //
-
-    for( ; ; )
-    {
-        karakter=fgetc(fp);
-
-            if(karakter==105)       // Küçük "i" gelmesi durumunda onu büyük "İ" ile değiştirir.
-                karakter=221;
-            else if(karakter==253)
-                karakter=73;
-            else if(karakter==EOF)  // END OF File'a eşit olduğunda döngü sonlanır.
-                break;
-
-        k=toupper(karakter);        // İşaretçiden aldığı harfi büyütür ve k değişkenine atar.
-                                                // printf("%c",k); KONTROL SATIR
-            for(i=0;i<29;i++)               // k değişkenine atanan harfler tanımlanan dizidekilerle karşılaştırılır.
-            {
-                if(dizi[i].harf==k)
-                    dizi[i].adet+=1;
-            }
-    }
-
-    fclose(fp);
-
-    int toplam=0;
-    for(i=0;i<29;i++)
-        toplam+=dizi[i].adet;          // Toplam harf sayısını sayar.
-
-//BUBBLE SORT İLE SIRALAMA //
-
-   siralama(dizi);
-
-// EKRANA BASTIRMA MODÜLÜ //
-
-    printf("Toplam harf say%cs%c:%d\n",253,253,toplam);
-    for(i=0;i<29;i++)
-    {
-        if(dizi[i].adet>0)
-        {
-          printf("%c --> %d\n",dizi[i].harf,dizi[i].adet);
-
-        }
-    }
+    HarfTanimla(dizi);
+    HarfKontrol(dizi);
+    Siralama(dizi);
+    Yazdir(dizi);
     return 0;
 }
 
-//BUBBLE SORT İLE SIRALAMA FONKSİYONU //
-void siralama(struct_harf dizi[])
+void Siralama(struct_harf dizi[])
 {
      int temp,tempharf;
-     int i,j;
+     int j;
 
             for (i=1; i<29; i++)
             {
@@ -171,4 +123,51 @@ void siralama(struct_harf dizi[])
                     }
                 }
             }
+}
+
+void HarfKontrol(struct_harf dizi[])
+{
+    FILE *fp;
+    int karakter,buyukkarakter;
+    fp=fopen("dosya.txt","r");
+    for( ; ; )
+    {
+            karakter=fgetc(fp);
+
+            if(karakter==105)       // "i" gelmesi durumunda onu "İ" ile değiştirir.
+                karakter=221;
+            else if(karakter==253)  // "ı" gelmesi durumunda onu "I" ile değiştirir.
+                karakter=73;
+            else if(karakter==EOF)  // END OF File'a eşit olduğunda döngü sonlanır.
+                break;
+
+        buyukkarakter=toupper(karakter);        // İşaretçiden aldığı harfi büyütür ve k değişkenine atar.
+                                                    // printf("%c",k); KONTROL SATIR
+            for(i=0;i<29;i++)               // k değişkenine atanan harfler tanımlanan dizidekilerle karşılaştırılır.
+            {
+                if(dizi[i].harf==buyukkarakter)
+                    dizi[i].adet+=1;
+            }
+    }
+
+    fclose(fp);
+}
+int Toplam(struct_harf dizi[])
+{
+    int toplam=0;
+    for(i=0;i<29;i++)
+        toplam+=dizi[i].adet;
+    return(toplam);
+}
+
+void Yazdir(struct_harf dizi[])
+{
+    printf("Toplam harf say%cs%c:%d\n",253,253,Toplam(dizi));
+    for(i=0;i<29;i++)
+    {
+        if(dizi[i].adet>0)
+        {
+          printf("%c --> %d\n",dizi[i].harf,dizi[i].adet);
+        }
+    }
 }
