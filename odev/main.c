@@ -130,11 +130,13 @@ void HarfKontrol(struct_harf dizi[])
     FILE *fp;
     int karakter,buyukkarakter;
     fp=fopen("dosya.txt","r");
+
     if(fp==NULL)
     {
      printf("Dosya okuma hatası");
      exit(1);
     }
+
     for( ; ; )
     {
             karakter=fgetc(fp);
@@ -146,9 +148,9 @@ void HarfKontrol(struct_harf dizi[])
             else if(karakter==EOF)  // END OF File'a eşit olduğunda döngü sonlanır.
                 break;
 
-        buyukkarakter=toupper(karakter);        // İşaretçiden aldığı harfi büyütür ve k değişkenine atar.
-                                                    // printf("%c",k); KONTROL SATIR
-            for(i=0;i<29;i++)               // k değişkenine atanan harfler tanımlanan dizidekilerle karşılaştırılır.
+        buyukkarakter=toupper(karakter);
+
+            for(i=0;i<29;i++)
             {
                 if(dizi[i].harf==buyukkarakter)
                     dizi[i].adet+=1;
@@ -157,7 +159,7 @@ void HarfKontrol(struct_harf dizi[])
 
     fclose(fp);
 }
-int Toplam(struct_harf dizi[])
+int ToplamHarf(struct_harf dizi[])
 {
     int toplam=0;
     for(i=0;i<29;i++)
@@ -167,7 +169,7 @@ int Toplam(struct_harf dizi[])
 
 void Yazdir(struct_harf dizi[])
 {
-    printf("Toplam harf say%cs%c:%d\n",253,253,Toplam(dizi));
+    printf("Toplam harf say%cs%c:%d\n",253,253,ToplamHarf(dizi));
     for(i=0;i<29;i++)
     {
         if(dizi[i].adet>0)
