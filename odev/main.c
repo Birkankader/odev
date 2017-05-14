@@ -130,6 +130,11 @@ void HarfKontrol(struct_harf dizi[])
     FILE *fp;
     int karakter,buyukkarakter;
     fp=fopen("dosya.txt","r");
+    if(fp==NULL)
+    {
+     printf("Dosya okuma hatası");
+     exit(1);
+    }
     for( ; ; )
     {
             karakter=fgetc(fp);
