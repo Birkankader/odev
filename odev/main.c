@@ -1,4 +1,4 @@
-#include <stdio.h>
+﻿#include <stdio.h>
 #include <locale.h>
 #include <string.h>
 #include <ctype.h>
@@ -11,12 +11,6 @@ typedef struct
 
 int i;
 struct_harf dizi[29];
-
-void HarfTanimla(struct_harf dizi[]);
-void Siralama(struct_harf dizi[]);
-void HarfKontrol(struct_harf dizi[]);
-void Yazdir(struct_harf dizi[]);
-int  Toplam(struct_harf dizi[]);
 
 
 void HarfTanimla(struct_harf dizi[])
